@@ -27,7 +27,7 @@ int main(int argc, int **argv)
 		return -1;
 	}
 	ioctl(fd, BMP_GET_CHIP_ID, &chip_id);
-	printf("open bmp180 driver succ, chip ID[%x]\n", chip_id);
+	printf("open bmp180 driver successfully, chip ID[%x]\n", chip_id);
 	for(;;)
 	{
 		read(fd, buf, 10);

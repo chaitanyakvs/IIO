@@ -5,17 +5,17 @@
 #include <linux/device.h>
 #include <linux/i2c.h>
 
-/* module for explicit detect i2c device by bus id and can change according to the hardware */
+// module to detect i2c device by bus id and can change according to the hardware */
 
 #define	I2C_BUS_MAX	4
 
-/* device probing addreses need to change according to hardware*/
+// device probing addreses need to change according to hardware //
 static const unsigned short probe_i2c_addrs[] = I2C_ADDRS(0x55, 0x56);
 
 static struct i2c_board_info bmp085_i2c_info[] = {
 
-	{ 
-		I2C_BOARD_INFO("bmp180", 0x55), 
+	{
+		I2C_BOARD_INFO("bmp180", 0x55),
 	}
 };
 

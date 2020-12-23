@@ -1,4 +1,4 @@
-/* BMP180 Sensor using I2C bus protocol 
+/* BMP180 Sensor using I2C bus protocol
  *
  *in this program concentrated on  struct iio_dev members initialization
  */
@@ -10,7 +10,7 @@
 #include <linux/iio/sysfs.h>
 #include <linux/printk.h>
 #include <linux/iio/events.h>
-#include <linux/iio/buffer.h> 
+#include <linux/iio/buffer.h>
 #include <linux/iio/trigger.h>
 #include <linux/iio/triggered_buffer.h>
 #include <linux/i2c.h>
@@ -21,6 +21,22 @@
 #define BMP180_DRIVER_NAME  "bmp180-sensor-driver"
 #define BMP180_CHIP_ID       0x55
 #define STILL_NOT_COMPLETED   0
+
+enum { AC1, AC2, AC3, AC4, AC5, AC6, B1, B2, MB, MC, MD }; // parameters of BMP180 //
+
+struct bmp180_calib {
+	s16 AC1;
+	s16 AC2;
+	s16 AC3;
+	u16 AC4;
+	u16 AC5;
+	u16 AC6;
+	s16 B1;
+	s16 B2;
+	s16 MB;
+	s16 MC;
+	s16 MD;
+};
 
 /*private structure to store the information*/
 struct private_data {
@@ -72,14 +88,14 @@ static const struct iio_info bmp180_info = {
 
 
 /* i2c probe function */
-static int bmp180_i2c_probe (struct i2c_client *client, const struct i2c_device_id *id) 
+static int bmp180_i2c_probe (struct i2c_client *client, const struct i2c_device_id *id)
 {
-	
+
 	/* device structure representing the iio device */
 	struct iio_dev *indio_dev=NULL;
 
 	/*my private data structure */
-	struct private_data *data = NULL; 
+	struct private_data *data = NULL;
 
 	/* allocate iio_dev structure using devm_iio_device_allo ()
 	 * @arg1: device to allocate iio_dev
@@ -91,14 +107,14 @@ static int bmp180_i2c_probe (struct i2c_client *client, const struct i2c_device_
 		pr_info("FAIL to allocate iio_dev structure\n");
 		return -ENOMEM;
 	}
-	
+
 
 	/* initialize struct iio_dev members */
 
 	indio_dev->info = &bmp180_info;
 	indio_dev->name = BMP180_DRIVER_NAME;
 	indio_dev->channel = bmp180_channels;
-	indio_dev->num_channels =ARRAY_SIZE(bmp180_channels); 
+	indio_dev->num_channels =ARRAY_SIZE(bmp180_channels);
 
 
 	/* buffer setup using trigger */
@@ -107,11 +123,11 @@ static int bmp180_i2c_probe (struct i2c_client *client, const struct i2c_device_
 
 	/* register the device with iio core */
 
-	
+
 	return STILL_NOT_COMPLETED;
 
 
-}	
+}
 
 
 /* i2c remove function */
@@ -132,7 +148,7 @@ static int bmp180_i2c_remove (struct i2c_client *client)
 
 
 
-/*  
+/*
 static int bmp180_i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver)
 {
 		return STILL_NOT_COMPLETED;
@@ -148,7 +164,7 @@ static const struct of_device_id bmp180_of_i2c_match[] = {
 MODULE_DEVICE_TABLE(of, bmp180_of_i2c_match);
 
 static const struct i2c_device_id bmp180_id[] = {
-	{ BMP180_DRIVER_NAME, BMP180_CHIP_ID },	
+	{ BMP180_DRIVER_NAME, BMP180_CHIP_ID },
 	{ },
 };
 
@@ -167,13 +183,13 @@ MODULE_DEVICE_TABLE(i2c, bmp180_id);
 static struct i2c_driver bmp180_i2c_driver = {
 	.driver = {
 		.name	= BMP180_DRIVER_NAME,
-		.of_match_table = bmp180_of_i2c_match, 
+		.of_match_table = bmp180_of_i2c_match,
 		.owner = THIS_MODULE,
 		},
 	.id_table	= bmp180_id,
 	.probe		= bmp180_i2c_probe,
 	.remove		= bmp180_i2c_remove,
-	
+
 	/*.detect		= bmp180_i2c_detect,*/
 };
 
