@@ -10,7 +10,7 @@ static const unsigned short normal_i2c[] = { BMP180_I2C_ADDRESS, I2C_CLIENT_END 
 static int bmp180_i2c_detect(struct i2c_client *client,
 			     struct i2c_board_info *info)
 {
-	if (client->addr != BMP085_I2C_ADDRESS)
+	if (client->addr != BMP180_I2C_ADDRESS)
 		return -ENODEV;
 
 	return bmp180_detect(&client->dev);
