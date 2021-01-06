@@ -10,6 +10,8 @@
 #include <linux/iio/buffer.h>		// Manage buffer //
 #include <linux/iio/trigger.h>		// If we use trigger //
 
+//#include "bmp280.h"
+
 enum { AC1, AC2, AC3, AC4, AC5, AC6, B1, B2, MB, MC, MD };
 
 struct bmp180_calib {
@@ -42,7 +44,7 @@ static const struct iio_chan_spec bmp180_channels[] = {
 		.type = IIO_PRESSURE,
 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-	};
+}	};
 
 	static const struct iio_info bmp180_info = {
 		.read_raw = &bmp180_read_raw,
@@ -57,7 +59,7 @@ static const struct iio_chan_spec bmp180_channels[] = {
 
 		{
 				return 0;
-		}
+		};
 
 
 
@@ -69,7 +71,7 @@ int bmp180_probe(struct device *dev, const char *name, const struct bmp180_ops *
 				int ret;
 				iio_device = devm_iio_device_alloc(dev, sizeof(*data));
 
-					if(!ii0_device){
+					if(!iio_device){
 						return -ENOMEM;
 
 				iio_device->name = bmp180;
@@ -79,7 +81,7 @@ int bmp180_probe(struct device *dev, const char *name, const struct bmp180_ops *
 
 				iio_device->dev.parent = dev;
 				iio_device->name = name;
-				iio_device->channel = bmp180_channels
+				iio_device->channels = bmp180_channels;
 				iio_device->num_channels = ARRAY_SIZE(bmp180_channels);
 				iio_device->modes =(INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE);   // Need to check which mode is suitable //
 				iio_device->info = &bmp180_info;
